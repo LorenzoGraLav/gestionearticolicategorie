@@ -51,4 +51,14 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		
 	}
 
+	@Override
+	public List<Categoria> findByOrdine(Long id) throws Exception {
+		if (id == null)
+			throw new Exception("Problema valore in input");
+		return entityManager
+				.createQuery("select distinct c from Categoria c join c.articoli a join a.ordine o where o.id = :id ",
+						Categoria.class)
+				.setParameter("id", id).getResultList();
+	}
+
 }

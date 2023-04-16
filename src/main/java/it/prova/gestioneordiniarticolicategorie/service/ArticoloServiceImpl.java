@@ -223,6 +223,27 @@ public class ArticoloServiceImpl implements ArticoloService {
 				}
 		
 	}
+
+	@Override
+	public int sommaPrezzoArticoloDaCategoria(Long id) throws Exception {
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			articoloDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return articoloDAO.sumPriceArticoloByCategoria(id);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+
+	}
 	
 	
 }

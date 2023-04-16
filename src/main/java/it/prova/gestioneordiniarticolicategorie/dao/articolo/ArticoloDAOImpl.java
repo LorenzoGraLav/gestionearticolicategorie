@@ -71,4 +71,11 @@ public class ArticoloDAOImpl implements ArticoloDAO {
 		
 	}
 
+	@Override
+	public int sumPriceArticoloByCategoria(Long id) throws Exception {
+		return entityManager
+				.createQuery("select sum(a.prezzoSingolo) from Articolo a join a.categorie c where c.id = ?1")
+				.setParameter(1, id).getFirstResult();
+	}
+
 }

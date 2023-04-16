@@ -20,5 +20,7 @@ public interface CategoriaService {
 	
 	public void aggiungiArticolo(Categoria categoriaInstance, Articolo articoloInstance) throws Exception;
 
+	public List<Categoria> TrovaCategoriaDaOrdine(Long id) throws Exception;
+	
 	public void setCategoriaDAO(CategoriaDAO categoriaDAO);
 }

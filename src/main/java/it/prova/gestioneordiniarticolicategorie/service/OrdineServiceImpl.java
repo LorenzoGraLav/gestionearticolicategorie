@@ -133,5 +133,65 @@ public class OrdineServiceImpl implements OrdineService {
 		}
 		
 	}
+
+	@Override
+	public List<Ordine> TrovaOrdineDaCategoria(Long id) throws Exception {
+		// questo è come una connection
+				EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+				try {
+					// uso l'injection per il dao
+					ordineDAO.setEntityManager(entityManager);
+
+					// eseguo quello che realmente devo fare
+					return ordineDAO.allByCategoria(id);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw e;
+				} finally {
+					EntityManagerUtil.closeEntityManager(entityManager);
+				}
+	}
+
+	@Override
+	public Ordine TrovaOrdinePiuRecenteDaCategoria(Long id) throws Exception {
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			ordineDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return ordineDAO.getOrdinePiuRecenteByCategoria(id);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public List<String> caricaCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(int mese, int anno) throws Exception {
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			ordineDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return ordineDAO.getCodiciDiCategorieMeseEAnno(mese, anno);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
 	
 }

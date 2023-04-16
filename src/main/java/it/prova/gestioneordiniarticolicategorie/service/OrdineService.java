@@ -16,5 +16,12 @@ public interface OrdineService {
 
 	public void rimuovi(Long idOrdine) throws Exception;
 	
+	public List<Ordine> TrovaOrdineDaCategoria(Long id) throws Exception;
+	
+	public Ordine TrovaOrdinePiuRecenteDaCategoria(Long id) throws Exception;
+	
+	public List<String> caricaCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(int mese, int anno)
+			throws Exception;
+	
 	public void setOrdineDAO(OrdineDAO ordineDAO);
 }

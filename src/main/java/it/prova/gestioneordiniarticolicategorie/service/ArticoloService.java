@@ -23,5 +23,7 @@ public interface ArticoloService {
 
 	public void rimuoviArticoloConCategorieCollegate(Articolo articoloIstance) throws Exception;
 	
+	public int sommaPrezzoArticoloDaCategoria(Long id) throws Exception;
+	
 	public void setArticoloDAO(ArticoloDAO articoloDAO);
 }

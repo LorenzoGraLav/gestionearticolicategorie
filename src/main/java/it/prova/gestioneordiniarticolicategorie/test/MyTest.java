@@ -13,7 +13,6 @@ import it.prova.gestioneordiniarticolicategorie.service.CategoriaService;
 import it.prova.gestioneordiniarticolicategorie.service.MyServiceFactory;
 import it.prova.gestioneordiniarticolicategorie.service.OrdineService;
 
-
 public class MyTest {
 
 	public static void main(String[] args) {
@@ -40,12 +39,22 @@ public class MyTest {
 			// testRimozioneArticolo(articoloServiceInstance);
 			// testInserimentoNuovaCategoria(categoriaServiceInstance);
 			// testAggiornamentoCategoria(categoriaServiceInstance);
-		    // testAggiungiCategoriaAdArticolo(articoloServiceInstance, categoriaServiceInstance);
-			
-			//testAggiungiArticoloACategoria(categoriaServiceInstance, articoloServiceInstance);
-			//testRimuoviCategoriaDaArticolo(articoloServiceInstance, categoriaServiceInstance);
-			//testRimozioneArticoloConCategorieCollegate(articoloServiceInstance);
+			// testAggiungiCategoriaAdArticolo(articoloServiceInstance,
+			// categoriaServiceInstance);
 
+			// testAggiungiArticoloACategoria(categoriaServiceInstance,
+			// articoloServiceInstance);
+			// testRimuoviCategoriaDaArticolo(articoloServiceInstance,
+			// categoriaServiceInstance);
+			// testRimozioneArticoloConCategorieCollegate(articoloServiceInstance);
+			// testTrovaOrdiniDaCategoria(ordineServiceInstance, categoriaServiceInstance);
+			// testTrovaCategoriaDaOrdine(ordineServiceInstance, categoriaServiceInstance);
+			// testSommaPrezzoSingoloArticoloDaCategoria(articoloServiceInstance,
+			// categoriaServiceInstance);
+			// testTrovaOrdinePiuRecenteDaCategoria(ordineServiceInstance,
+			// categoriaServiceInstance);
+			testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(categoriaServiceInstance, articoloServiceInstance,
+					ordineServiceInstance);
 			System.out.println(
 					"****************************** fine batteria di test ********************************************");
 			System.out.println(
@@ -227,26 +236,109 @@ public class MyTest {
 		List<Categoria> elencoCategorie = categoriaServiceInstance.listAll();
 		Categoria daRimuovere = elencoCategorie.get(0);
 
-		articoloServiceInstance.rimuoviCategoriaDaArticolo(daRimuovere.getId());;
+		articoloServiceInstance.rimuoviCategoriaDaArticolo(daRimuovere.getId());
+		;
 
 		System.out.println("...........testRimuoviCategoriaDaArticolo fine: PASSED...........");
 
 	}
-	
-	private static void testRimozioneArticoloConCategorieCollegate(ArticoloService articoloServiceInstance) throws Exception{
+
+	private static void testRimozioneArticoloConCategorieCollegate(ArticoloService articoloServiceInstance)
+			throws Exception {
 		System.out.println("........ testRimozioneArticoloConCategorieCollegate inizio........");
-		
+
 		List<Articolo> listaArticoli = articoloServiceInstance.listAll();
 		Articolo daEliminare = listaArticoli.get(0);
 
 		if (daEliminare.getId() == null)
 			throw new RuntimeException(
 					"testRimozioneArticoloConCategorieCollegate fallito: non riesco a trovare nessun articolo! ");
-		
+
 		articoloServiceInstance.rimuoviArticoloConCategorieCollegate(daEliminare);
-		
+
 		System.out.println("...........testRimozioneArticoloConCategorieCollegate fine: PASSED..............");
 
+	}
+
+	private static void testTrovaOrdiniDaCategoria(OrdineService ordineServiceInstance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println("..........testTrovaOrdiniDaCategoria inizio..............");
+
+		Long idDaPrendere = categoriaServiceInstance.listAll().get(0).getId();
+
+		List<Ordine> resultOrdini = ordineServiceInstance.TrovaOrdineDaCategoria(idDaPrendere);
+
+		if (resultOrdini.isEmpty())
+			throw new RuntimeException(" testTrovaOrdiniDaCategoria fallito: nessun ordine disponibile!");
+
+		System.out.println(resultOrdini);
+
+		System.out.println(".........testTrovaOrdiniDaCategoria fine: PASSED...................");
+	}
+
+	private static void testTrovaCategoriaDaOrdine(OrdineService ordineServiceInstance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println("..........testTrovaCategoriaDaOrdine inizio.........");
+
+		Long idDaPrendere = ordineServiceInstance.listAll().get(0).getId();
+
+		List<Categoria> resultCategorie = categoriaServiceInstance.TrovaCategoriaDaOrdine(idDaPrendere);
+
+		if (resultCategorie.isEmpty())
+			throw new RuntimeException(" testTrovaCategoriaDaOrdine fallito: nessuna categoria disponibile!");
+
+		System.out.println(resultCategorie);
+
+		System.out.println("..........testTrovaCategoriaDaOrdine fine: PASSED........");
+
+	}
+
+	private static void testSommaPrezzoSingoloArticoloDaCategoria(ArticoloService articoloServiceInstance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println(".............testSommaPrezzoSingoloArticoloDaCategoria inizio.............");
+
+		Long idDaPrendere = categoriaServiceInstance.listAll().get(2).getId();
+
+		int result = articoloServiceInstance.sommaPrezzoArticoloDaCategoria(idDaPrendere);
+
+		System.out.println(result);
+
+		System.out.println("..........testSommaPrezzoSingoloArticoloDaCategoria fine: PASSED............");
+	}
+
+	private static void testTrovaOrdinePiuRecenteDaCategoria(OrdineService ordineServiceInstance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println(".......testTrovaOrdinePiuRecenteDaCategoria inizio.........");
+
+		Long idDaPrendere = categoriaServiceInstance.listAll().get(0).getId();
+
+		Ordine result = ordineServiceInstance.TrovaOrdinePiuRecenteDaCategoria(idDaPrendere);
+
+		if (result == null) {
+			throw new RuntimeException("testTrovaOrdinePiuRecenteDaCategoria fallito non trovo ordini!");
+		}
+
+		System.out.println(result);
+
+		System.out.println("...........testTrovaOrdinePiuRecenteDaCategoria fine: PASSED.........");
+
+	}
+
+	private static void testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("..............testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno inizio.......");
+
+		List<String> elencoCodici = ordineServiceInstance.caricaCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(4, 2023);
+
+		if (elencoCodici.isEmpty()) {
+			throw new RuntimeException(
+					"testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno fallito: non riesco a trovare Codici!");
+
+		}
+
+		System.out.println(elencoCodici);
+
+		System.out.println(".............testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno fine: PASSED............");
 	}
 
 }
