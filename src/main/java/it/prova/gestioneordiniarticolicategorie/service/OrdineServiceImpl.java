@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import exceptions.CustomException;
 import it.prova.gestioneordiniarticolicategorie.dao.EntityManagerUtil;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
@@ -192,6 +193,73 @@ public class OrdineServiceImpl implements OrdineService {
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
+	}
+
+	@Override
+	public Integer sommaPrezzoSingoloArticoloConDestinatario(String nomeDestinatario) throws Exception {
+		// questo è come una connection
+				EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+				try {
+					// uso l'injection per il dao
+					ordineDAO.setEntityManager(entityManager);
+
+					// eseguo quello che realmente devo fare
+					return ordineDAO.getSumPriceOfDestinatario(nomeDestinatario);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw e;
+				} finally {
+					EntityManagerUtil.closeEntityManager(entityManager);
+				}
+	}
+
+	@Override
+	public List<String> listaIndirizziOrdiniAventiArticoliConSeriale(String seriale) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		if (seriale == null) {
+			throw new RuntimeException("Errore input");
+		}
+
+		try {
+
+			ordineDAO.setEntityManager(entityManager);
+
+			return ordineDAO.listaDiIndirizziDiOrdiniAventiArticoliConSeriale(seriale);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+
+		}
+	}
+
+	@Override
+	public void eliminaOrdine(Ordine input) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			entityManager.getTransaction().begin();
+			
+			ordineDAO.setEntityManager(entityManager);
+			
+			if(input.getArticoli().size()>0)
+				throw new CustomException("errore ci sono articoli collegati");
+			
+			ordineDAO.delete(input);
+			
+			entityManager.getTransaction().commit();
+		}catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+		
 	}
 	
 }

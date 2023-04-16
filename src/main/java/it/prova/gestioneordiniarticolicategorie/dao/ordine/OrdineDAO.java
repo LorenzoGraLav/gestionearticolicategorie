@@ -9,4 +9,6 @@ public interface OrdineDAO extends IBaseDAO<Ordine> {
 	public List<Ordine> allByCategoria(Long id)throws Exception;
 	public Ordine getOrdinePiuRecenteByCategoria(Long id) throws Exception;
 	public List<String> getCodiciDiCategorieMeseEAnno(int mese, int anno) throws Exception;
+	public Integer getSumPriceOfDestinatario(String nomeDestinatario) throws Exception;
+	public List<String> listaDiIndirizziDiOrdiniAventiArticoliConSeriale (String seriale)throws Exception;
 }

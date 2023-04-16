@@ -23,5 +23,11 @@ public interface OrdineService {
 	public List<String> caricaCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(int mese, int anno)
 			throws Exception;
 	
+	public Integer sommaPrezzoSingoloArticoloConDestinatario(String nomeDestinatario) throws Exception;
+	
+	public List<String> listaIndirizziOrdiniAventiArticoliConSeriale (String seriale)throws Exception;
+
+	public void eliminaOrdine(Ordine input) throws Exception;
+	
 	public void setOrdineDAO(OrdineDAO ordineDAO);
 }

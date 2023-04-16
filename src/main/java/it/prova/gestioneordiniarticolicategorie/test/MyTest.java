@@ -47,14 +47,23 @@ public class MyTest {
 			// testRimuoviCategoriaDaArticolo(articoloServiceInstance,
 			// categoriaServiceInstance);
 			// testRimozioneArticoloConCategorieCollegate(articoloServiceInstance);
+			//testRimuoviOrdineConException(ordineServiceInstance);
 			// testTrovaOrdiniDaCategoria(ordineServiceInstance, categoriaServiceInstance);
 			// testTrovaCategoriaDaOrdine(ordineServiceInstance, categoriaServiceInstance);
 			// testSommaPrezzoSingoloArticoloDaCategoria(articoloServiceInstance,
 			// categoriaServiceInstance);
 			// testTrovaOrdinePiuRecenteDaCategoria(ordineServiceInstance,
 			// categoriaServiceInstance);
-			testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(categoriaServiceInstance, articoloServiceInstance,
-					ordineServiceInstance);
+			// testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno(categoriaServiceInstance,
+			// articoloServiceInstance,
+			// ordineServiceInstance);
+
+			// testSommaPrezzoSingoloArticoliConDestinatario(categoriaServiceInstance,
+			// articoloServiceInstance,
+			// ordineServiceInstance);
+
+			//testIndirizziOrdiniAventiArticoliConSeriale(categoriaServiceInstance, articoloServiceInstance,
+				//	ordineServiceInstance);
 			System.out.println(
 					"****************************** fine batteria di test ********************************************");
 			System.out.println(
@@ -260,6 +269,16 @@ public class MyTest {
 
 	}
 
+	private static void testRimuoviOrdineConException(OrdineService ordineServiceInstance) throws Exception {
+		System.out.println(".........testRimuoviOrdineConException inizio............ ");
+
+		Ordine ordineDaRimuovere = ordineServiceInstance.listAll().get(0);
+
+		ordineServiceInstance.eliminaOrdine(ordineDaRimuovere);
+
+		System.out.println(".......testRimuoviOrdineConException fine: PASSED............ ");
+	}
+
 	private static void testTrovaOrdiniDaCategoria(OrdineService ordineServiceInstance,
 			CategoriaService categoriaServiceInstance) throws Exception {
 		System.out.println("..........testTrovaOrdiniDaCategoria inizio..............");
@@ -339,6 +358,43 @@ public class MyTest {
 		System.out.println(elencoCodici);
 
 		System.out.println(".............testCodiciDiCategorieDiArticoliDiOrdiniInMeseEAnno fine: PASSED............");
+	}
+
+	private static void testSommaPrezzoSingoloArticoliConDestinatario(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("..........testSommaPrezzoSingoloArticoliConDestinatario inizio.........");
+
+		String nomeDestinarioDaPrendere = ordineServiceInstance.listAll().get(2).getNomeDestinatario();
+
+		int somma = ordineServiceInstance.sommaPrezzoSingoloArticoloConDestinatario(nomeDestinarioDaPrendere);
+
+		if (somma < 0) {
+			throw new RuntimeException("Errore!");
+		}
+
+		System.out.println(somma);
+
+		System.out.println("..........testSommaPrezzoSingoloArticoliConDestinatario fine: PASSED.........");
+
+	}
+
+	private static void testIndirizziOrdiniAventiArticoliConSeriale(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("......testIndirizziOrdiniAventiArticoliConSeriale inizio........");
+
+		List<Categoria> elencoCategorie = categoriaServiceInstance.listAll();
+
+		String codice = elencoCategorie.get(2).getCodice();
+
+		List<String> elencoIndirizzi = ordineServiceInstance.listaIndirizziOrdiniAventiArticoliConSeriale(codice);
+
+		if (elencoIndirizzi.isEmpty()) {
+			throw new RuntimeException("testIndirizziOrdiniAventiArticoliConSeriale fallito: non trovo Indirizzi");
+		}
+
+		System.out.println(elencoIndirizzi);
+
+		System.out.println("...............testIndirizziOrdiniAventiArticoliConSeriale fine: PASSED............");
 	}
 
 }
